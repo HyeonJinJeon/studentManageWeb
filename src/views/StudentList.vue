@@ -28,7 +28,7 @@
       </tbody>
     </table>
     <b-button variant="primary" @click="goAdd">학생 등록</b-button>
-    <b-button variant="primary" @click="goBack">뒤로가기</b-button>
+    <b-button variant="danger" @click="goBack">뒤로가기</b-button>
   </div>
 </template>
 
