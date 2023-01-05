@@ -13,7 +13,7 @@
 // @ is an alias to /src
 
 export default {
-  name: 'home',
+  name: 'Home',
   methods: {
     goAdd(){
       this.$router.push('/add')

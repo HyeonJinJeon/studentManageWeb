@@ -38,7 +38,7 @@
 import {firebase} from '@/firebase/firebaseConfig';
 
 export default {
-  name: 'home',
+  name: 'StudentList',
   data(){
     return {
       fbCollection: 'students',
