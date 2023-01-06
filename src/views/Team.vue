@@ -2,18 +2,20 @@
   <div class="home">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="#">학생 관리 시스템</a>
+      <b-button variant="danger" @click="logOut"> 로그아웃 </b-button>
     </nav>
-    <b-button variant="danger" @click="goATeam">A클래스</b-button>
+    <b-button variant="primary" @click="goATeam">A클래스</b-button>
     <b-button variant="primary" @click="goBTeam">B클래스</b-button>
-    <b-button variant="warning" @click="goCTeam">C클래스</b-button>
-    <b-button variant="primary" @click="setTeam">학급 등록</b-button><br><br>
-    <b-button variant="primary" @click="goBack">뒤로가기</b-button>
-    <b-button variant="danger" @click="findUid">uid확인</b-button>
+    <b-button variant="primary" @click="goCTeam">C클래스</b-button>
+    <b-button variant="warning" @click="goNoTeam">학급 등록</b-button><br><br>
+    <b-button variant="info" @click="goStudentList">전체학생</b-button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+
+import {firebase} from '@/firebase/firebaseConfig';
 
 export default {
   name: 'Team',
@@ -23,9 +25,6 @@ export default {
     }
   },
   methods: {
-    findUid(){
-      console.log(this.docId)
-    },
     goATeam(){
       this.$router.push('/team/a')
     },
@@ -35,11 +34,15 @@ export default {
     goCTeam(){
       this.$router.push('/team/c')
     },
-    goBack(){
-      this.$router.push('/')
+    goStudentList(){
+      this.$router.push('/list')
     },
-    setTeam(){
-      this.$router.push({name: 'SetTeam', params: {id: this.docId}}).catch(()=>{});
+    goNoTeam(){
+      this.$router.push('/team/no');
+    },
+    logOut(){
+      firebase.auth().signOut()
+      this.$router.push('/')
     }
   },
   components: {

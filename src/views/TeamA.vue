@@ -2,6 +2,8 @@
   <div class="home">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="#">학생 관리 시스템</a>
+      <b-button variant="danger" @click="logOut"> 로그아웃 </b-button>
+
     </nav>
     <table class="table " border="1" style="margin-left: auto; margin-right: auto;">
       <thead>
@@ -72,6 +74,10 @@ export default {
     goManage(i){
       this.$router.push({name: 'ManageStudent', params: {id: this.rows[i].id}}).catch(()=>{});
     },
+    logOut(){
+      firebase.auth().signOut()
+      this.$router.push('/')
+    }
   },
   mounted() {
     const self = this;

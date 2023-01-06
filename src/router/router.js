@@ -43,12 +43,11 @@ const router = new Router({
       path: '/team',
       name: 'Team',
       component: () => import('../views/Team'),
-
     },
     {
-      path: '/team/set',
-      name: 'SetTeam',
-      component: () => import('../views/SetTeam'),
+      path: '/my/info',
+      name: 'ViewMyInfo',
+      component: () => import('../views/ViewMyInfo.vue'),
 
     },
     {
@@ -87,9 +86,29 @@ const router = new Router({
       component: () => import('../views/TeacherSignUp'),
     },
     {
-      path: '/bridge',
-      name: 'Bridge',
-      component: () => import('../views/Bridge'),
+      path: '/team/no',
+      name: 'NoTeam',
+      component: () => import('../views/NoTeam'),
+    },
+    {
+      path: '/board',
+      name: 'Board',
+      component: () => import('../views/Board'),
+    },
+    {
+      path: '/post',
+      name: 'PostInfo',
+      component: () => import('../views/PostInfo'),
+    },
+    {
+      path: '/write',
+      name: 'PostWrite',
+      component: () => import('../views/PostWrite'),
+    },
+    {
+      path: '/post/modify',
+      name: 'PostModify',
+      component: () => import('../views/PostModify'),
     },
 
   ]

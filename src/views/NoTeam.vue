@@ -28,7 +28,6 @@
       </tr>
       </tbody>
     </table>
-    <b-button variant="primary" @click="goAdd">학생 등록</b-button>
     <b-button variant="danger" @click="goBack">뒤로가기</b-button>
   </div>
 </template>
@@ -39,21 +38,22 @@
 import {firebase} from '@/firebase/firebaseConfig';
 
 export default {
-  name: 'StudentList',
-  data(){
-    return {
+  name: 'NoTeam',
+  data() {
+    return{
       fbCollection: 'students',
       rows: [],
     }
   },
   methods: {
-    goAdd(){
-      this.$router.push('/add')
+    goBack(){
+      this.$router.push('/team')
     },
     getDataList(){
       const self = this;
       const db = firebase.firestore();
       db.collection(self.fbCollection)
+          .where("team", "==", "")
           .get()
           .then((querySnapshot) => {
             if (querySnapshot.size === 0) {
@@ -67,14 +67,11 @@ export default {
             });
           })
     },
-    goManage(i){
-      this.$router.push({name: 'ManageStudent', params: {id: this.rows[i].id}}).catch(()=>{});
-    },
     init(){
       this.getDataList()
     },
-    goBack(){
-      this.$router.push('/home')
+    goManage(i){
+      this.$router.push({name: 'ManageStudent', params: {id: this.rows[i].id}}).catch(()=>{});
     },
     logOut(){
       firebase.auth().signOut()

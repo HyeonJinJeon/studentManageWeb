@@ -28,9 +28,9 @@ export default {
     loginCheck(){
       if(this.$store.state.user != null){
         if( this.$store.state.user.photoURL === '0'){
-          this.$router.push('/team')
+          this.$router.push('/home')
         }else if(this.$store.state.user.photoURL === '1'){
-          this.$router.push('/team/set')
+          this.$router.push('/board')
         }
       }
     },
