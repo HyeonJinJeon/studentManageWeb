@@ -1,42 +1,58 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
       <a class="navbar-brand" href="#">학생 커뮤니케이션</a>
-      <b-button variant="danger" @click="logOut"> 로그아웃 </b-button>
+      <div class="justify-content-end">
+        <b-button class="btn float-right" variant="danger" @click="logOut"> 로그아웃 </b-button>
+      </div >
     </nav>
-    <td><b-button variant="info" @click="goWrite">글 작성</b-button></td>
 
-    <table class="table " border="1" style="margin-left: auto; margin-right: auto;">
-      <thead>
-      <tr>
-        <th>작성자</th>
-        <th>학년</th>
-        <th>제목</th>
-        <th>상세 정보</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(rows,i) in rows" :key="i">
-        <td>{{rows.student.name}}</td>
-        <td>{{rows.student.grade}}</td>
-        <td>{{rows.title}}</td>
-        <td><b-button variant="info" @click="goPost(i)">상세 정보</b-button></td>
-      </tr>
-      </tbody>
-    </table>
+    <input
+        size="sm"
+        class="mr-sm-2"
+        type="text"
+        placeholder="검색어를 입력해주세요"
+        v-model="keyword"
+        v-on:keypress.enter.prevent="getSearchList(keyword)"
+    />
+    <b-button
+        size="sm"
+        class="my-2 my-sm-0"
+        type="submit"
+        @click="getSearchList(keyword)"
+    >검색
+
+      <!--        <b-icon icon="search"></b-icon>-->
+    </b-button><br>
+    <div class="btn float-right">
+    <b-button  variant="primary" @click="getDataList">모든 게시글 불러오기</b-button>
+    </div>
+
+
+    <div class="btn float-right">
+    <b-button  variant="primary" @click="goWrite">글 작성</b-button>
+    </div>
+  <Pagination :list-array="rows" />
   </div>
 </template>
 
 <script>
 import {firebase} from '@/firebase/firebaseConfig';
+import Pagination from '@/views/Pagination.vue';
 
 export default {
   name: "Board",
+  components: {Pagination},
   data(){
     return{
       fbCollection: 'board',
       rows: [],
+      keyword: '',
     }
+  },
+  mounted() {
+    const self = this;
+    self.init();
   },
   methods: {
     logOut(){
@@ -45,6 +61,7 @@ export default {
     },
     getDataList(){
       const self = this;
+      self.rows.splice(0);
       const db = firebase.firestore();
       db.collection(self.fbCollection)
           .get()
@@ -55,7 +72,6 @@ export default {
             querySnapshot.forEach((doc) => {
               const _data = doc.data();
               _data.id = doc.id //각 유저 필드에 따로 id값이 없지만 유저 고유 id를 불로올 수 있음
-              console.log(_data)
               self.rows.push(_data);
 
             });
@@ -64,17 +80,32 @@ export default {
     init(){
       this.getDataList()
     },
-    goPost(i){
-      this.$router.push({name: 'PostInfo', params: {id: this.rows[i].id}}).catch(()=>{});
-    },
+
     goWrite(){
       this.$router.push('/write')
     },
+
+    getSearchList(){
+      const self = this;
+      const db = firebase.firestore();
+      self.rows.splice(0);
+      console.log(1111111,self.rows)
+      console.log(222222, self.keyword)
+      db.collection(self.fbCollection)
+          .where('title', '>=', self.keyword)
+          .where('title', '<=', self.keyword + "\uf8ff")
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const _data = doc.data();
+              _data.id = doc.id //각 유저 필드에 따로 id값이 없지만 유저 고유 id를 불로올 수 있음
+              self.rows.push(_data);
+            });
+          })
+    },
+
   },
-  mounted() {
-    const self = this;
-    self.init();
-  },
+
 }
 </script>
 
