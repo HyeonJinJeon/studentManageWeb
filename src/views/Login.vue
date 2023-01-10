@@ -2,7 +2,7 @@
   <div class="home">
     <h3>Login</h3>
     <input type="text" placeholder="email" v-model="email"><br>
-    <input type="password" placeholder="password" v-model="password"><br>
+    <input type="password" placeholder="password" v-model="password" v-on:keypress.enter.prevent=login><br>
     <b-button variant="success" @click="login">로그인</b-button>
     <b-button variant="primary" @click="goStudentSignup">학생으로 회원가입</b-button>
     <b-button variant="primary" @click="goTeacherSignup">선생님으로 회원가입</b-button>
@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     loginCheck(){
+      console.log(this.$store.state.user.photoURL)
       if(this.$store.state.user != null){
         if( this.$store.state.user.photoURL === '0'){
           this.$router.push('/home')
@@ -36,9 +37,9 @@ export default {
     },
     login(){
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then( () =>{
+          .then( () => {
             alert('로그인 완료!');
-            this.loginCheck()
+            setTimeout(() => {this.loginCheck()},1);
           }).catch(err => {
         console.error(err);
         alert('에러 : ' + err.message)
