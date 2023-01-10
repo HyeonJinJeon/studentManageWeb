@@ -6,9 +6,9 @@
     <h4>제목</h4>
     <input v-model="row.title"><br><br>
     <h4>내용</h4>
-    <input type="textarea" v-model="row.contents"><br><br>
+    <textarea v-model="row.contents"></textarea>
     <h4>작성자: {{student.name}}</h4>
-    <b-button variant="success" @click="addPost">작성완료</b-button>
+    <b-button variant="success" @click="modifyPost">작성완료</b-button>
     <b-button variant="danger" @click="cancleAdd">취소하기</b-button>
   </div>
 </template>
@@ -54,6 +54,20 @@ export default {
           .then((snapshot)  => {
             const _data = snapshot.data();
             this.row = _data
+          })
+    },
+    modifyPost(){
+      const self = this;
+      const db = firebase.firestore();
+      db.collection(self.fbCollection)
+          .doc(self.docId)
+          .update({
+            title: self.row.title,
+            contents: self.row.contents,
+          })
+          .then(() => {
+            alert("수정 완료")
+            self.$router.push('/board')
           })
     },
     init(){
