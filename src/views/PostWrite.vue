@@ -25,12 +25,12 @@ export default {
       row: {},
       fbCollection: 'board',
       title: '',
-      contents: 0,
+      contents: '',
       }
   },
   methods: {
     cancleAdd(){
-      this.$router.push('/home')
+      this.$router.push('/board')
     },
     getData(){
       const self = this;
@@ -46,13 +46,15 @@ export default {
     addPost(){
       const self = this;         // self를 쓰는 이유는 바깥의 this들과 햇갈리지 않기 위해서
       const db = firebase.firestore();
+      const now = new Date();
       const _data = {            // data()에 있는 데이터가 바로 들어갈 수 없다.
         title: self.title,
         contents: self.contents,
+        time: now,
         uid: self.$store.state.user.uid,
         student: {
           name: this.row.name,
-          grade: this.row.grade
+          grade: this.row.grade,
         },
       }
       db.collection(self.fbCollection) //<- collection('컬랙션명') 바로 쓸수있다.
